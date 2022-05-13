@@ -2,11 +2,20 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import {Chart as ChartJS,ArcElement,LineElement,BarElement,PointElement,BarController,BubbleController,DoughnutController,LineController,PieController,PolarAreaController,RadarController,ScatterController,CategoryScale,LinearScale,LogarithmicScale,RadialLinearScale,TimeScale,TimeSeriesScale,Decimation,Filler,Legend,Title,Tooltip,SubTitle} from 'chart.js';
 import { Bar, Doughnut, Line, Pie, PolarArea, Radar, Bubble, Scatter } from 'react-chartjs-2';
+import { type } from '@testing-library/user-event/dist/type';
 ChartJS.register(ArcElement,LineElement,BarElement,PointElement,BarController,BubbleController,DoughnutController,LineController,PieController,PolarAreaController,RadarController,ScatterController,CategoryScale,LinearScale,LogarithmicScale,RadialLinearScale,TimeScale,TimeSeriesScale,Decimation,Filler,Legend,Title,Tooltip,SubTitle);
 
 
-const SemiDoughnutChart =(prop) => {
 
+
+const SemiDoughnutChart =(prop) => {
+    const url = prop.url
+    const url2 = prop.url2
+    //const url2 = 'http://localhost:29384/api/table1/zephyr' //https://api.github.com/users/zellwk/repos?sort=pushed https://jsonplaceholder.typicode.com/users  https://localhost:44316/api/values
+const labelSet = []
+const dataSet1 = [];
+const dataSet2 = [];
+const dataSet3 = [];
     
 
     const [data, setData] = useState({
@@ -14,11 +23,13 @@ const SemiDoughnutChart =(prop) => {
         datasets: [],
     });
 
+    
+
     const gaugeNeedle = {
         id: 'gaugeNeedle',
         afterDatasetDraw(chart, args, options) {
             const {ctx, config, data, chartArea: {top, bottom, left, right, width, height}} = chart;
-            //ctx.save();
+            ctx.save();
 
             const totalValue = data.datasets[0].totalValue;
             const potentialValue = data.datasets[0].potentialValue;
@@ -99,9 +110,16 @@ const SemiDoughnutChart =(prop) => {
         }
     };
 
+    var maxim = 0
+    if(prop.type == 'sites'){
+        maxim = 'Active : '+((data.datasets[0]?.totalValue/data.datasets[0]?.potentialValue)*100).toFixed(2)+'%'
+        
+    }
+    else if(prop.type == 'patients'){
+        maxim = 'To target : '+((data.datasets[0]?.totalValue/data.datasets[0]?.potentialValue)*100).toFixed(2)+'%'
+    }
 
     const options =  {
-        
         indexAxis: 'x',
         responsive: true,
         maintainAspectRatio: false,
@@ -121,7 +139,7 @@ const SemiDoughnutChart =(prop) => {
             },
             title: {
                 display: true,
-                text: prop.legend+"%",
+                text: maxim,
                 align: 'end',
                 color: 'black',
                 font:{
@@ -135,11 +153,7 @@ const SemiDoughnutChart =(prop) => {
     useEffect(()=> {
 
         const fetchData= async()=> {
-            const url = prop.url
-            const url2 = 'http://localhost:29384/api/table1/zephyr' //https://api.github.com/users/zellwk/repos?sort=pushed https://jsonplaceholder.typicode.com/users  https://localhost:44316/api/values
-            const labelSet = []
-            const dataSet1 = [];
-            const dataSet2 = [];
+            
             
             
             await fetch(url).then((data) => data.json()).then((res) => {
@@ -147,7 +161,12 @@ const SemiDoughnutChart =(prop) => {
                 dataSet1.push(val.firstvalue);  //val.id for Int or parseInt(val.address.geo.lat) for String  val.name  val.score
                 dataSet2.push(val.secondvalue)  //val.postId  parseInt(val.address.geo.lng)
                 labelSet.push(val.label)  //val.name ou val.address.zipcode ou val.address.geo.lat
-            }
+                }
+            })
+            await fetch(url2).then((data) => data.json()).then((res) => {
+                for (const val of res) {
+                    dataSet3.push(val.secondvalue)
+                }
             })
 
         //----------------------------------------------Ajouter une deuxième API
@@ -175,6 +194,7 @@ const SemiDoughnutChart =(prop) => {
                 borderRadius: 1,
                 totalValue: dataSet2[0], //dataSet2[0],
                 potentialValue: dataSet1[0],//dataSet2[0], //dataSet1[0],
+                siteValue: dataSet3[0]
                 //hoverOffset: 5
                 // borderWidth: 10,
                 //hoverBorderWidth: 5,
@@ -190,29 +210,33 @@ const SemiDoughnutChart =(prop) => {
             // },
             ],
         })
-
         } //fetchdata
         fetchData(); //on appelle fetchdata
-
 
     },[])
     //Bar, Doughnut, Line, Pie, PolarArea, Radar, Bubble, Scatter
 
-    // function tring() {
-    //     console.log("wassss")
-    //     if (prop.tryy == 'blue') {
-    //         console.log("wasssfdsfdsss");
-    //         <span>fdsjflk</span>
-    //     } 
-    //     else {
-    //         <span>fdsjflk</span>
-    //     }
-    // };
+    if (prop.type == 'patients') {
+        const patientvalue = data.datasets[0]?.totalValue
+        const sitevalue = data.datasets[0]?.siteValue
+        return(
+            <>
+            <div style={{width:'100%', height:'20vh'}}>
+                <Doughnut data={data} plugins={[gaugeNeedle]} options={options}/> 
+                AVG patients per site : {(patientvalue/sitevalue).toFixed(2)}
+            </div>
+            </>
+            )
+        
+    } 
+    else if (prop.type == 'sites') {
+        return(
+            <div style={{width:'100%', height:'20vh'}}>
+                <Doughnut data={data} plugins={[gaugeNeedle]} options={options}/> 
+                
+            </div>)
+    }
 
-    return(
-        <div style={{width:'100%', height:'20vh'}}>
-            <Doughnut data={data} plugins={[gaugeNeedle]} options={options}/> 
-            
-        </div>)
+    
 }
 export default SemiDoughnutChart

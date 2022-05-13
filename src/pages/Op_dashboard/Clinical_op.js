@@ -28,7 +28,7 @@ function Clinical_op() {
                     Site identified per country 
                 </div>
                 <Btn_export_data/>
-                <PieChart url='http://localhost:5000/api/OpDashboard/site_identified_per_country' legend='AE/SAE'/>
+                <PieChart url='http://localhost:5000/api/OpDashboard/site_identified_per_country' legend='AE/SAE' type='semi'/>
             </div>
 
             <div className='block' style={{width: "21.2%"}}>
@@ -36,7 +36,7 @@ function Clinical_op() {
                     Sites 
                 </div>
                 <Btn_export_data/>
-                <SemiDoughnutChart url='http://localhost:5000/api/OpDashboard/sites' legend='Active : xxx' filter='Initiated'/>
+                <SemiDoughnutChart url='http://localhost:5000/api/OpDashboard/sites' url2='http://localhost:5000/api/OpDashboard/sites' legend='Active : xxx' filter='Initiated' type='sites'/>
                 <div>
 
                 </div>
@@ -47,7 +47,7 @@ function Clinical_op() {
                     Patients 
                 </div>
                 <Btn_export_data/>
-                <SemiDoughnutChart url='http://localhost:5000/api/OpDashboard/patients' legend='To target : xxx' filter='Included'/>
+                <SemiDoughnutChart url='http://localhost:5000/api/OpDashboard/patients' url2='http://localhost:5000/api/OpDashboard/sites' legend='To target : xxx' filter='Included' type='patients'/>
             </div>
 
             <div className='block' style={{width: "35%"}}>
@@ -86,15 +86,8 @@ function Clinical_op() {
                 <div className='title_block'>
                     Documents
                 </div>
-                <div>
-                    <br/>
-                    Received : xxx <br/>
-                    Default unresolved : xxx
-                    <br/>
-                    <br/>
-                </div>
                 <Btn_export_data/>
-                <DoughnutChart url='http://localhost:5000/api/OpDashboard/documents_conformity' legend='Conformity' />
+                <DoughnutChart url='http://localhost:5000/api/OpDashboard/documents_conformity' legend='Conformity' type='documents' />
             </div>
 
             <div className='block' style={{width: "15%"}}>
@@ -102,14 +95,7 @@ function Clinical_op() {
                     Safety
                 </div>
                 <Btn_export_data/>
-                <DoughnutChart url='http://localhost:5000/api/OpDashboard/safety_ae' legend='AE/SAE'/>
-                <div>
-                    <br/>
-                    <br/>
-                    <span>Serious: xxx</span>
-                    <br/>
-                    <span>Ack not received: xxx</span>
-                </div>
+                <DoughnutChart url='http://localhost:5000/api/OpDashboard/safety_ae' legend='AE/SAE' type='safety'/>
             </div> 
 
         </div>

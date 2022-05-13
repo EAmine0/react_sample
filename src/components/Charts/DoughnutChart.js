@@ -52,12 +52,13 @@ ChartJS.register(ArcElement,LineElement,BarElement,PointElement,BarController,Bu
            const labelSet = []
            const dataSet1 = [];
            const dataSet2 = [];
-           
+           const dataSet3 = [];
            
          await fetch(url).then((data) => data.json()).then((res) => {
             for (const val of res) {
                 dataSet1.push(val.firstvalue);  //val.id for Int or parseInt(val.address.geo.lat) for String  val.name  val.score
-                //dataSet2.push(val.secondvalue)  //val.postId  parseInt(val.address.geo.lng)
+                dataSet2.push(val.secondvalue)  //val.postId  parseInt(val.address.geo.lng)
+                dataSet3.push(val.thirdvalue)  //val.postId  parseInt(val.address.geo.lng)
                 labelSet.push(val.label)  //val.name ou val.address.zipcode ou val.address.geo.lat
             }
          })
@@ -86,6 +87,10 @@ ChartJS.register(ArcElement,LineElement,BarElement,PointElement,BarController,Bu
               borderRadius: 1,
               // borderWidth: 10,
               hoverBorderWidth: 5,
+              resolved: dataSet2[0],
+              default_unresolved: dataSet3[0],
+              serious: dataSet2[0],
+              ack_not_received: dataSet3[0]
               //hoverOffset: 5
             },
             // {
@@ -106,11 +111,62 @@ ChartJS.register(ArcElement,LineElement,BarElement,PointElement,BarController,Bu
 
     },[])
     //Bar, Doughnut, Line, Pie, PolarArea, Radar, Bubble, Scatter
-   
-    return(
-        <div style={{width:'100%', height:'20vh'}}>
-            <Doughnut data={data} plugins={[ChartDataLabels]} options={options}/> 
-        </div>)
+
+    if (prop.type == 'documents') {
+      //const patientvalue = data.datasets[0]?.totalValue
+      //const sitevalue = data.datasets[0]?.siteValue
+      return(
+          <>
+          <div>
+              Received : {data.datasets[0]?.resolved}
+              <br/>
+              Default unresolved : {data.datasets[0]?.default_unresolved}
+          </div>
+          <div style={{width:'100%', height:'20vh'}}>
+              
+              <Doughnut data={data} plugins={[ChartDataLabels]} options={options}/> 
+          </div>
+          </>
+          )
+    } 
+    else if (prop.type == 'safety') {
+        return(
+          <>
+          <div style={{width:'100%', height:'20vh'}}>
+                <Doughnut data={data} plugins={[ChartDataLabels]} options={options}/> 
+                
+          </div>
+          <div>
+                Serious : {((data.datasets[0]?.serious/data.datasets[0]?.ack_not_received)*100).toFixed(1)} %
+                <br/>
+                Ack not received : {data.datasets[0]?.ack_not_received}
+          </div>
+          <div style={{fontSize: '.8rem', border: '1px solid black'}}>
+            <table>
+              <tr>
+                  <th>           </th>
+                  <th>Initial</th>
+                  <th>Follow-up</th>
+              </tr>
+              <tr>
+                  <td>AVG SAE per site</td>
+                  <td>xxx</td>
+                  <td>xxx</td>
+              </tr>
+              <tr>
+                  <td>AVG SAE per patient</td>
+                  <td>xxx</td>
+                  <td>xxx</td>
+              </tr>
+            </table>
+          </div>
+          </>
+            )
+    }
+    // return(
+    //     <div style={{width:'100%', height:'20vh'}}>
+    //         <Doughnut data={data} plugins={[ChartDataLabels]} options={options}/> 
+    //     </div>)
 }
 
 

@@ -22,8 +22,6 @@ import InitiationPhase from './pages/Monitoring/InitiationPhase';
 import FUPhase from './pages/Monitoring/FUPhase';
 import COPhase from './pages/Monitoring/COPhase';
 import Details from './pages/Monitoring/Details';
-import Ter from './components/ter';
-import Ter2 from './components/Ter2';
 import { useState } from 'react';
 
 import Op_dashboard from './pages/Op_dashboard/Op_dashboard';

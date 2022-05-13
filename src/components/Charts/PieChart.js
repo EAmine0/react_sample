@@ -15,7 +15,16 @@ const PieChart =(prop) => {
     datasets: [],
   });
 
-  
+  var circum = 0
+  var rotat = 0
+  if(prop.type == 'whole'){
+    circum = 360
+    rotat = 0
+  }
+  else if(prop.type == 'semi'){
+    circum = 180
+    rotat = 270
+  }
   const options =  {
     indexAxis: 'x',
     elements: {
@@ -24,13 +33,18 @@ const PieChart =(prop) => {
       },
     },
     responsive: true,
+    circumference: circum,  //  Pour Doughnut ou Pie
+    rotation: rotat,   
     maintainAspectRatio: false,
     plugins: {
       datalabels:{
         display: true,
-        color: 'black',
+        color: 'white',
         anchor: 'center',
-        dataIndex: 0,
+        formatter: (value, context) => {
+          return context.dataset?.lab[context.dataIndex];
+        }
+        //dataIndex: 0,
       },
       legend: {
         display: false,
@@ -80,15 +94,17 @@ const PieChart =(prop) => {
           {
             label: "prop.label1",
             data:dataSet1,
-            borderColor: ['rgba(54, 125, 173, 1)','rgba(255, 192, 0, 1)'],
-            backgroundColor: ['rgba(54, 125, 173, 0.5)','rgba(255, 192, 0, 0.5)'],
+            borderColor: ['rgba(1, 184, 170, 1)','rgba(201, 27, 61, 1)','rgba(253, 98, 94, 1)','rgba(55, 70, 73, 1)','rgba(242, 200, 15, 1)','rgba(131, 196, 57, 1)','rgba(48, 156, 159, 1)','rgba(110, 0, 85, 1)'],
+            backgroundColor: ['rgba(1, 184, 170, 1)','rgba(201, 27, 61, 1)','rgba(253, 98, 94, 1)','rgba(55, 70, 73, 1)','rgba(242, 200, 15, 1)','rgba(131, 196, 57, 1)','rgba(48, 156, 159, 1)','rgba(110, 0, 85, 1)'],
             //cutout: '50%',        //
-            circumference: 180,  //  Pour Doughnut ou Pie
-            rotation: 270,      //
+            //circumference: 180,  //  Pour Doughnut ou Pie
+            //rotation: 270,      //
             borderRadius: 10,
             // borderWidth: 10,
-            hoverBorderWidth: 2,
-            hoverOffset: 5
+            hoverBorderWidth: 1,
+            hoverBorderColor: 'white',
+            hoverOffset: 5,
+            lab: labelSet,//['check', 'out']
           },
           // {
           //   label: "prop.label2",

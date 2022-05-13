@@ -21,7 +21,19 @@ const options = {
       },
     },
     responsive: true,
+    scales: {
+      x: {
+        // suggestedMin: 50,
+        // suggestedMax: 100
+      },
+      y: {
+        suggestedMax: 50,
+        //reverse: true,
+        
+      }
+    },
     plugins: {
+      
       datalabels:{
         display: true,
         color: 'black',
