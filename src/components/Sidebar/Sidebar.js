@@ -2,8 +2,6 @@ import React from 'react'
 import "./Sidebar.css"
 import { Link, NavLink } from "react-router-dom"
 import { SidebarData } from './SidebarData'
-import { SidebarData2 } from './SidebarData'
-import { TopbarOpDash } from './TopbarData'
 
 function Sidebar() {
     return (

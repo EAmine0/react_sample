@@ -13,102 +13,175 @@ ChartJS.register(ArcElement,LineElement,BarElement,PointElement,BarController,Bu
 //--------------------------------------------------------------------------------------------
 
 
-const options = {
-    indexAxis: 'x',
-    elements: {
-      bar: {
-        borderWidth: 2,
-      },
-    },
-    responsive: true,
-    scales: {
-      x: {
-        // suggestedMin: 50,
-        // suggestedMax: 100
-      },
-      y: {
-        suggestedMax: 50,
-        //reverse: true,
-        
-      }
-    },
-    plugins: {
-      
-      datalabels:{
-        display: true,
-        color: 'black',
-        anchor: 'end',
-        align: 'top',
-        offset: -3
-      },
-      legend: {
-        position: 'top',
-      },
-      // title: {
-      //   display: true,
-      //   text: 'Température',
-      //   position: 'left'
-      // },
-    },
-  };
+
 
 const BarChart =(prop) => {
     const [data, setData] = useState({
       labels:[],
       datasets: [],
     });
+
+    var indexaxis = " ";
+    var top = " "
+    var offset = 0
+    if(prop.type == 'site_status'){
+      indexaxis = "x"
+      top = 'top'
+      offset = -3
+    }
+    else if(prop.type == 'patient_mandatory_consultation'){
+      indexaxis = "y"
+      top = 'right'
+      offset = 3
+  }
+
+    const options = {
+    
+      indexAxis: indexaxis,
+      elements: {
+        bar: {
+          borderWidth: 2,
+        },
+      },
+      responsive: true,
+      hoverBorderWidth: 5,
+      scales: {
+        x: {
+          // suggestedMin: 50,
+          // suggestedMax: 100
+        },
+        y: {
+          suggestedMax: 50,
+          //reverse: true,
+          
+        }
+      },
+      plugins: {
+        
+        datalabels:{
+          display: true,
+          color: 'black',
+          anchor: 'end',
+          align: top,
+          offset: offset
+        },
+        legend: {
+          position: 'top',
+        },
+        // title: {
+        //   display: true,
+        //   text: 'Température',
+        //   position: 'left'
+        // },
+      },
+    };
+    
     useEffect(()=> {
        const fetchData= async()=> {
-           const url = prop.url
-           const url2 = 'http://localhost:29384/api/table1/zephyr' //https://api.github.com/users/zellwk/repos?sort=pushed https://jsonplaceholder.typicode.com/users  https://localhost:44316/api/values
-           const labelSet = []
-           const dataSet1 = [];
-           const dataSet2 = [];
-           
-         await fetch(url).then((data) => data.json()).then((res) => {
+         if(prop.type == 'site_status'){
+            const url = prop.url
+            const labelSet = []
+            const dataSet1 = [];
+            const dataSet2 = [];
+            await fetch(url).then((data) => data.json()).then((res) => {
+              for (const val of res) {
+                  dataSet1.push(val.firstvalue); 
+                  dataSet2.push(val.secondvalue) 
+                  labelSet.push(val.label)  
+              }
+          })
+          setData({
+            labels: labelSet,
+            datasets: [
+              {
+                label: prop.label1,
+                data:dataSet1,
+                borderColor: 'rgba(75,192,192,1)',
+                backgroundColor: 'rgba(75,192,192,0.2)',
+                // borderRadius: 10,
+                // borderWidth: 10,
+                hoverBorderWidth: 5,
+              },
+              {
+                label: prop.label2,
+                data:dataSet2,
+                borderColor: '#742774',
+                backgroundColor: 'rgba(75,192,192,0.2)',
+                // borderRadius: 10,
+                // borderWidth: 10,
+                hoverBorderWidth: 5,
+              }
+            ],
+          })
+         }
+
+         //-----------------------------------------------------------
+
+         else if(prop.type == 'patient_mandatory_consultation'){
+          const url = prop.url
+          const labelSet = []
+          const dataSet1 = [];
+          const dataSet2 = [];
+          const dataSet3 = [];
+          const dataSet4 = [];
+          const dataSet5 = [];
+          const dataSet6 = [];
+          await fetch(url).then((data) => data.json()).then((res) => {
             for (const val of res) {
-                dataSet1.push(val.firstvalue);  //val.id for Int or parseInt(val.address.geo.lat) for String  val.name  val.score
-                dataSet2.push(val.secondvalue)  //val.postId  parseInt(val.address.geo.lng)
-                labelSet.push(val.label)  //val.name ou val.address.zipcode ou val.address.geo.lat
+              labelSet.push(val.label) 
+                dataSet1.push(val.firstvalue);
+                dataSet2.push(val.secondvalue)  
+                dataSet3.push(val.thirdvalue)  
+                dataSet4.push(val.fourthvalue)  
+                dataSet5.push(val.fifthvalue)  
+                dataSet6.push(val.sixthvalue)  
             }
          })
-
-        //----------------------------------------------Ajouter une deuxième API
-        //  await fetch(url).then((data) => data.json()).then((res) => {
-        //     for (const val of res) {
-        //         //dataSet2.push(val.ORDINAL_POSITION)  //val.postId  parseInt(val.address.geo.lng)
-        //         // labelSet.push(val.name)  //val.name ou val.address.zipcode ou val.address.geo.lat
-        //     }
-        //     console.log("arr Data : ", dataSet1, dataSet2)
-        // })
-
-        //-----------------------------------------------Dataset
          setData({
           labels: labelSet,
           datasets: [
             {
-              label: prop.label1,
+              label: "Consultation NA",
               data:dataSet1,
-              borderColor: 'rgba(75,192,192,1)',
-              backgroundColor: 'rgba(75,192,192,0.2)',
-              // borderRadius: 10,
-              // borderWidth: 10,
-              hoverBorderWidth: 5,
+              borderColor: ['rgba(1, 184, 170, 1)'],
+            backgroundColor: ['rgba(1, 184, 170, 1)'],
+            },
+            {
+              label: "Consultation incomplete",
+              data:dataSet2,
+              borderColor: ['rgba(201, 27, 61, 1)'],
+            backgroundColor: ['rgba(201, 27, 61, 1)'],
+            },
+            {
+              label: "consultation complete",
+              data:dataSet3,
+              borderColor: ['rgba(253, 98, 94, 1)'],
+            backgroundColor: ['rgba(253, 98, 94, 1)'],
+            },
+            {
+              label: "consultation DEA",
+              data:dataSet4,
+              borderColor: ['rgba(55, 70, 73, 1)'],
+            backgroundColor: ['rgba(55, 70, 73, 1)'],
+            },
+            {
+              label: "consultation DEB",
+              data:dataSet5,
+              borderColor: ['rgba(242, 200, 15, 1)'],
+            backgroundColor: ['rgba(242, 200, 15, 1)'],
               
             },
             {
-              label: prop.label2,
-              data:dataSet2,
-              borderColor: '#742774',
-              backgroundColor: 'rgba(75,192,192,0.2)',
-              // borderRadius: 10,
-              // borderWidth: 10,
-              hoverBorderWidth: 5,
+              label: "consultation clean",
+              data:dataSet6,
+              borderColor: ['rgba(131, 196, 57, 1)'],
+            backgroundColor: ['rgba(131, 196, 57, 1)'],
             },
           ],
         })
-
+        }
         } //fetchdata
+
         fetchData(); //on appelle fetchdata
 
 
@@ -117,9 +190,6 @@ const BarChart =(prop) => {
    
     return(
         <div style={{width:'100%', height:'100%'}}>
-            {
-                console.log("data", data)
-            }
             <Bar data={data} plugins={[ChartDataLabels]} options={options}/> 
          </div>)
 }

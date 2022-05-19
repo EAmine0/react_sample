@@ -1,6 +1,4 @@
 import React from 'react'
-import Topbar from '../../components/Topbar'
-import { TopbarOpDash } from '../../components/TopbarData';
 
 import BarChart from '../../components/Charts/BarChart';
 import DoughnutChart from '../../components/Charts/DoughnutChart';
@@ -55,7 +53,7 @@ function Clinical_op() {
                     Site status
                 </div>
                 <Btn_export_data/>
-                <BarChart url='http://localhost:5000/api/OpDashboard/site_status' label1='Status total' label2='Last status total'/>
+                <BarChart url='http://localhost:5000/api/OpDashboard/site_status' type='site_status' label1='Status total' label2='Last status total'/>
             </div>
 
             <div className='block' style={{width: "35%"}}>
@@ -63,7 +61,7 @@ function Clinical_op() {
                     Patient status
                 </div>
                 <Btn_export_data/>
-                <BarChart url='http://localhost:5000/api/OpDashboard/patient_status' label1='Status total' label2='Last status total'/>
+                <BarChart url='http://localhost:5000/api/OpDashboard/patient_status' type='site_status' label1='Status total' label2='Last status total'/>
             </div>
 
             <div className='block' style={{width: "76.2%"}}>

@@ -1,31 +1,19 @@
 import React from 'react'
-import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import {Chart as ChartJS,ArcElement,LineElement,BarElement,PointElement,BarController,BubbleController,DoughnutController,LineController,PieController,PolarAreaController,RadarController,ScatterController,CategoryScale,LinearScale,LogarithmicScale,RadialLinearScale,TimeScale,TimeSeriesScale,Decimation,Filler,Legend,Title,Tooltip,SubTitle} from 'chart.js';
-// import {Chart as ChartJS,CategoryScale,LinearScale,BarElement,Title,Tooltip,Legend} from 'chart.js';
 import { Bar, Doughnut, Line, Pie, PolarArea, Radar, Bubble, Scatter } from 'react-chartjs-2';
-// ChartJS.register(CategoryScale,LinearScale,BarElement,Title,Tooltip,Legend);
+import { type } from '@testing-library/user-event/dist/type';
 ChartJS.register(ArcElement,LineElement,BarElement,PointElement,BarController,BubbleController,DoughnutController,LineController,PieController,PolarAreaController,RadarController,ScatterController,CategoryScale,LinearScale,LogarithmicScale,RadialLinearScale,TimeScale,TimeSeriesScale,Decimation,Filler,Legend,Title,Tooltip,SubTitle);
 
-  const DoughnutChart =(prop) => {
+
+const GetData =(prop) => {
 
     const [data, setData] = useState({
       labels:[],
       datasets: [],
     });
 
-    var maxim = true;
-    if(prop.type == 'documents'){
-      maxim = true
-    }
-    else if(prop.type == 'safety'){
-        maxim = true
-    }
-    else if(prop.type == 'queries'){
-      maxim = false
-  }
-
+    
     const options =  {
       indexAxis: 'x',
       elements: {
@@ -36,18 +24,12 @@ ChartJS.register(ArcElement,LineElement,BarElement,PointElement,BarController,Bu
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        datalabels:{
-          display: true,
-          color: 'black',
-          anchor: 'center'
-        },
         legend: {
-          display: maxim,
           position: 'top',
           align: 'start'
         },
         title: {
-          display: maxim,
+          display: true,
           text: prop.legend,
           align: 'start'
         },
@@ -67,10 +49,9 @@ ChartJS.register(ArcElement,LineElement,BarElement,PointElement,BarController,Bu
            
          await fetch(url).then((data) => data.json()).then((res) => {
             for (const val of res) {
-                dataSet1.push(val.firstvalue);  //val.id for Int or parseInt(val.address.geo.lat) for String  val.name  val.score
-                dataSet2.push(val.secondvalue)  //val.postId  parseInt(val.address.geo.lng)
-                dataSet3.push(val.thirdvalue)  //val.postId  parseInt(val.address.geo.lng)
-                labelSet.push(val.label)  //val.name ou val.address.zipcode ou val.address.geo.lat
+                dataSet1.push(val.value5);  
+                dataSet2.push(val.value6)
+                dataSet3.push(val.firstvalue)
             }
          })
 
@@ -85,7 +66,7 @@ ChartJS.register(ArcElement,LineElement,BarElement,PointElement,BarController,Bu
 
         //-----------------------------------------------Dataset
          setData({
-          labels: labelSet,
+          labels: 'labelSet',
           datasets: [
             {
               label: "prop.label1",
@@ -98,10 +79,13 @@ ChartJS.register(ArcElement,LineElement,BarElement,PointElement,BarController,Bu
               borderRadius: 1,
               // borderWidth: 10,
               hoverBorderWidth: 5,
-              resolved: dataSet2[0],
-              default_unresolved: dataSet3[0],
-              serious: dataSet2[0],
-              ack_not_received: dataSet3[0]
+              entered: dataSet1[0],
+              cleaned: dataSet2[0],
+              patient_cleaned: dataSet3[0],
+            //   resolved: dataSet2[0],
+            //   default_unresolved: dataSet3[0],
+            //   serious: dataSet2[0],
+            //   ack_not_received: dataSet3[0]
               //hoverOffset: 5
             },
             // {
@@ -129,13 +113,13 @@ ChartJS.register(ArcElement,LineElement,BarElement,PointElement,BarController,Bu
       return(
           <>
           <div>
-              Received : {data.datasets[0]?.resolved}
+          <br/>
+              Entered : {(data.datasets[0]?.entered*100)?.toFixed(2)}% &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Cleaned : {(data.datasets[0]?.cleaned*100)?.toFixed(2)}%
               <br/>
-              Default unresolved : {data.datasets[0]?.default_unresolved}
-          </div>
-          <div style={{width:'100%', height:'20vh'}}>
-              
-              <Doughnut data={data} plugins={[ChartDataLabels]} options={options}/> 
+              <br/>
+              {/* Received : {data.datasets[0]?.resolved}
+              <br/>
+              Default unresolved : {data.datasets[0]?.default_unresolved} */}
           </div>
           </>
           )
@@ -143,69 +127,18 @@ ChartJS.register(ArcElement,LineElement,BarElement,PointElement,BarController,Bu
     else if (prop.type == 'safety') {
         return(
           <>
-          <div style={{width:'100%', height:'20vh'}}>
-                <Doughnut data={data} plugins={[ChartDataLabels]} options={options}/> 
-                
-          </div>
           <div>
-                Serious : {((data.datasets[0]?.serious/data.datasets[0]?.ack_not_received)*100).toFixed(1)} %
-                <br/>
-                Ack not received : {data.datasets[0]?.ack_not_received}
-          </div>
-          <div style={{fontSize: '.8rem', border: '1px solid black'}}>
-            <table>
-              <tr>
-                  <th>           </th>
-                  <th>Initial</th>
-                  <th>Follow-up</th>
-              </tr>
-              <tr>
-                  <td>AVG SAE per site</td>
-                  <td>xxx</td>
-                  <td>xxx</td>
-              </tr>
-              <tr>
-                  <td>AVG SAE per patient</td>
-                  <td>xxx</td>
-                  <td>xxx</td>
-              </tr>
-            </table>
+            <br/>
+              {data.datasets[0]?.patient_cleaned}
+            <br/>
           </div>
           </>
             )
     }
-    else if (prop.type == 'queries') {
-      return(
-        <>
-        <div>
-          Issued : xxx &nbsp; Closed : xxx 
-        </div>
-        <div style={{width:'100%', height:'20vh', border: '2px solid blue', display: 'flex'}}>
-          <div style={{width:'20%', height:'20vh', border: '2px solid red'}}>
-                <Doughnut data={data} plugins={[ChartDataLabels]} options={options}/> 
-          </div>
-          <div style={{width:'20%', height:'20vh', border: '2px solid red'}}>
-                <Doughnut data={data} plugins={[ChartDataLabels]} options={options}/> 
-          </div>
-          <div style={{width:'20%', height:'20vh', border: '2px solid red'}}>
-                <Doughnut data={data} plugins={[ChartDataLabels]} options={options}/> 
-          </div>
-          <div style={{width:'20%', height:'20vh', border: '2px solid red'}}>
-                <Doughnut data={data} plugins={[ChartDataLabels]} options={options}/> 
-          </div>
-        </div>
-        
-        <div>
-              Test
-        </div>
-        </>
-          )
-  }
     // return(
     //     <div style={{width:'100%', height:'20vh'}}>
     //         <Doughnut data={data} plugins={[ChartDataLabels]} options={options}/> 
     //     </div>)
 }
 
-
-export default DoughnutChart
+export default GetData

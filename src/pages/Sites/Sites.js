@@ -4,7 +4,7 @@ import Clinical_op from '../Op_dashboard/Clinical_op'
 import Dmcrf from '../Op_dashboard/Dmcrf'
 import Dmecrf from '../Op_dashboard/Dmecrf'
 import Btn_export from '../../components/Btn_export'
-import Sidebar from '../../components/Sidebar'
+import Status from './Status'
 
 
 function Sites() {

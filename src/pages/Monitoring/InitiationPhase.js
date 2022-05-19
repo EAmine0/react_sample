@@ -1,6 +1,6 @@
 import React from 'react'
-import Topbar from '../../components/Topbar'
-import { TopbarMonitoring } from '../../components/TopbarData'
+import Topbar from '../../components/Topbar/Topbar'
+import { TopbarMonitoring } from '../../components/Topbar/TopbarData'
 
 function InitiationPhase() {
     return (

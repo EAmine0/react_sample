@@ -4,7 +4,6 @@ import Clinical_op from './Clinical_op'
 import Dmcrf from './Dmcrf'
 import Dmecrf from './Dmecrf'
 import Btn_export from '../../components/Btn_export'
-import Sidebar from '../../components/Sidebar'
 
 function Op_dashboard() {
     const [state, setState] = useState("")
@@ -20,10 +19,6 @@ function Op_dashboard() {
             indicator(e.target)
         })
     })
-
-    function tester(){
-        
-    }
 
 
     return (

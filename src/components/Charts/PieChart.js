@@ -93,9 +93,23 @@ const PieChart =(prop) => {
         datasets: [
           {
             label: "prop.label1",
-            data:dataSet1,
-            borderColor: ['rgba(1, 184, 170, 1)','rgba(201, 27, 61, 1)','rgba(253, 98, 94, 1)','rgba(55, 70, 73, 1)','rgba(242, 200, 15, 1)','rgba(131, 196, 57, 1)','rgba(48, 156, 159, 1)','rgba(110, 0, 85, 1)'],
-            backgroundColor: ['rgba(1, 184, 170, 1)','rgba(201, 27, 61, 1)','rgba(253, 98, 94, 1)','rgba(55, 70, 73, 1)','rgba(242, 200, 15, 1)','rgba(131, 196, 57, 1)','rgba(48, 156, 159, 1)','rgba(110, 0, 85, 1)'],
+            data: [7,17,3,3,2,1], //dataSet1,
+            borderColor: ['rgba(1, 184, 170, 1)',
+                          'rgba(201, 27, 61, 1)',
+                          'rgba(253, 98, 94, 1)',
+                          'rgba(55, 70, 73, 1)',
+                          'rgba(242, 200, 15, 1)',
+                          'rgba(131, 196, 57, 1)',
+                          'rgba(48, 156, 159, 1)',
+                          'rgba(110, 0, 85, 1)'],
+            backgroundColor: ['rgba(1, 184, 170, 1)',
+                              'rgba(201, 27, 61, 1)',
+                              'rgba(253, 98, 94, 1)',
+                              'rgba(55, 70, 73, 1)',
+                              'rgba(242, 200, 15, 1)',
+                              'rgba(131, 196, 57, 1)',
+                              'rgba(48, 156, 159, 1)',
+                              'rgba(110, 0, 85, 1)'],
             //cutout: '50%',        //
             //circumference: 180,  //  Pour Doughnut ou Pie
             //rotation: 270,      //
@@ -104,7 +118,7 @@ const PieChart =(prop) => {
             hoverBorderWidth: 1,
             hoverBorderColor: 'white',
             hoverOffset: 5,
-            lab: labelSet,//['check', 'out']
+            lab:['United States', 'France', 'Netherlands', 'Canada', 'Italy', 'Brazil'] //labelSet,//['check', 'out']
           },
           // {
           //   label: "prop.label2",

@@ -1,7 +1,7 @@
 import './App.css';
-import Header from './components/Header';
-import Sidebar from './components/Sidebar';
-import './components/Sidebar.css';
+import Header from './components/Header/Header';
+import Sidebar from './components/Sidebar/Sidebar';
+import './components/Sidebar/Sidebar.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 //codesandbox website
@@ -29,20 +29,6 @@ import Sites from './pages/Sites/Sites';
 import Monitoring from './pages/Monitoring/Monitoring';
 
 function App() {
-  // const [state, setState] = useState(false)
-
-  
-
-  
-  // const items = document.querySelectorAll(".topbar-toggle")
-  // items.forEach((item) => {
-  //     console.log("items : ",item)
-  //     item.addEventListener("click", () => {
-  //         document.querySelector(".activer").classList.remove("activer")
-  //         item.classList.add("activer")
-  //     })
-  // })
-  
 
   return (
           

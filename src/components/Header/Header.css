@@ -15,3 +15,12 @@
 #imgiReport{
     height: 98%;
 }
+
+.header_title{
+    /* border: 1px solid red; */
+    color: rgb(240, 240, 240);
+    font-size: 1.5rem;
+    font-weight: 700;
+    position: fixed;
+    right:20px;
+}

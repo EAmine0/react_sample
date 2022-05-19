@@ -1,6 +1,4 @@
 import React from 'react'
-import Topbar from '../../components/Topbar'
-import { TopbarSites } from '../../components/TopbarData'
 
 function Documents() {
     return (
@@ -8,7 +6,6 @@ function Documents() {
         <div className='title_page'>
             Sites
         </div>
-        <Topbar test={TopbarSites}/>
         <div className='box_container'>
             <div className='block'>
                 <div className='title_block'>
